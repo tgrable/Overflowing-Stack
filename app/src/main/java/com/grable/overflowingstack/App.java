@@ -19,6 +19,10 @@ public class App extends Application {
     public static final String BASE_URL = "http://5adbffc0980c238501d4-6ebc8dce445dc8adb8d88970e09e0fb4.r0.cf2.rackcdn.com/";
     public static final String CACHE = "max-age=3600, max-stale=259200";
 
+    public static final String QUESTION_DB = "question";
+    public static final String ANSWER_DB = "answer";
+
+
     public static OkHttpClient okHttpClient;
     public static Retrofit retrofit;
 

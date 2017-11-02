@@ -3,6 +3,8 @@ package com.grable.overflowingstack.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by timgrable on 10/31/17.
  */
@@ -32,6 +34,25 @@ public class Question {
     @SerializedName("isGuessed")
     @Expose
     private Boolean isGuessed;
+
+    @SerializedName("answers")
+    @Expose
+    private List<Answer> answers;
+
+    // Empty constructor
+    public Question() {
+
+    }
+
+    public Question(long question_id, String title, String body, String body_markdown, String creation_date, Boolean isGuessed, List<Answer> answers) {
+        this.question_id = question_id;
+        this.title = title;
+        this.body = body;
+        this.body_markdown = body_markdown;
+        this.creation_date = creation_date;
+        this.isGuessed = isGuessed;
+        this.answers = answers;
+    }
 
     public long getQuestion_id() { return this.question_id; }
 
@@ -71,7 +92,19 @@ public class Question {
         this.creation_date = creation_date;
     }
 
-    private Boolean getIsGuessed() {
+    public Boolean getIsGuessed() {
         return this.isGuessed;
+    }
+
+    public void setIsGuessed(Boolean isGuessed) {
+        this.isGuessed = isGuessed;
+    }
+
+    public List<Answer> getAnswers() {
+        return this.answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
     }
 }

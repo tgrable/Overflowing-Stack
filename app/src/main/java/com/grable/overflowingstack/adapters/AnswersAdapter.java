@@ -1,6 +1,7 @@
 package com.grable.overflowingstack.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,20 +11,19 @@ import android.widget.TextView;
 
 import com.grable.overflowingstack.App;
 import com.grable.overflowingstack.R;
-import com.grable.overflowingstack.models.Question;
+import com.grable.overflowingstack.models.Answer;
 
 import java.util.ArrayList;
 
 /**
- * Created by timgrable on 10/30/17.
+ * Created by timgrable on 11/1/17.
  */
 
-public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
-    private ArrayList<Question> questionList;
+public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHolder> {
+    private ArrayList<String> answerList;
 
-    public DataAdapter(ArrayList<Question> questionList) {
-        Log.d(App.TAG, "DataAdapter: " + questionList.size());
-        this.questionList = questionList;
+    public AnswersAdapter(ArrayList<String> answerList) {
+        this.answerList = answerList;
     }
 
     /**
@@ -47,10 +47,9 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
      * @see #onBindViewHolder(ViewHolder, int)
      */
     @Override
-    public DataAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(App.TAG, "onCreateViewHolder");
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.title_row, parent, false);
-        return new ViewHolder(view);
+    public AnswersAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.answer, parent, false);
+        return new AnswersAdapter.ViewHolder(view);
     }
 
     /**
@@ -74,8 +73,9 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(DataAdapter.ViewHolder holder, int position) {
-        holder.mPostTitle.setText(this.questionList.get(position).getTitle());
+    public void onBindViewHolder(AnswersAdapter.ViewHolder holder, int position) {
+        Log.d(App.TAG, this.answerList.get(position));
+        holder.mAnswer.setText(Html.fromHtml(this.answerList.get(position)));
     }
 
     /**
@@ -85,16 +85,16 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
      */
     @Override
     public int getItemCount() {
-        Log.d(App.TAG, String.valueOf(this.questionList.size()));
-        return this.questionList.size();
+        return answerList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView mPostTitle;
+        private TextView mAnswer;
 
-        public ViewHolder(View view) {
-            super(view);
-            mPostTitle = (TextView)view.findViewById(R.id.post_title);
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            mAnswer = (TextView)itemView.findViewById(R.id.answer);
         }
     }
 }
