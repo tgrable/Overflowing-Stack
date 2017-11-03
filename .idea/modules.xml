@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Overflowing-Stack.iml" filepath="$PROJECT_DIR$/Overflowing-Stack.iml" />
       <module fileurl="file://$PROJECT_DIR$/OverflowingStack.iml" filepath="$PROJECT_DIR$/OverflowingStack.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Overflowing Stack</string>
+    <string name="action_reload">Refresh Questions</string>
+    <string name="action_guessed">Show Guessed Questions</string>
+    <string name="action_all">Show All Questions</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="score">Score: 0</string>
+    <string name="title_activity_post">PostActivity</string>
+    <string name="isguessed">isGuessed</string>
 </resources>

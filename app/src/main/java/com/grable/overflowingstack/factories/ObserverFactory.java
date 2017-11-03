@@ -48,6 +48,7 @@ public class ObserverFactory {
             @Override
             public void onNext(T t) {
                 OSResponse obj = (OSResponse)t;
+                obj.getQuotaRemaining();
                 listener.observerOnNext(obj.getItems());
             }
 

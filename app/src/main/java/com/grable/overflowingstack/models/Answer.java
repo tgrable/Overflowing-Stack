@@ -33,19 +33,34 @@ public class Answer {
     @Expose
     private Boolean is_accepted;
 
+    @SerializedName("score")
+    @Expose
+    private int score;
+
+    @SerializedName("down_vote_count")
+    @Expose
+    private int down_vote_count;
+
+    @SerializedName("up_vote_count")
+    @Expose
+    private int up_vote_count;
+
     /**
      * Empty Constructor
      */
     public Answer() {
     }
 
-    public Answer(long answer_id, long question_id, String body, String body_markdown, String creation_date, Boolean is_accepted) {
+    public Answer(long answer_id, long question_id, String body, String body_markdown, String creation_date, Boolean is_accepted, int score, int down_vote_count, int up_vote_count) {
         this.answer_id = answer_id;
         this.question_id = question_id;
         this.body = body;
         this.body_markdown = body_markdown;
         this.creation_date = creation_date;
         this.is_accepted = is_accepted;
+        this.score = score;
+        this.down_vote_count = down_vote_count;
+        this.up_vote_count = up_vote_count;
     }
 
     public long getAnswer_id() {
@@ -94,6 +109,30 @@ public class Answer {
 
     public void setIs_accepted(Boolean value) {
         this.is_accepted = value;
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getDown_vote_count() {
+        return this.down_vote_count;
+    }
+
+    public void setDown_vote_count(int value) {
+        this.down_vote_count = value;
+    }
+
+    public int getUp_vote_count() {
+        return this.up_vote_count;
+    }
+
+    public void setUp_vote_count(int value) {
+        this.up_vote_count = value;
     }
 
 }

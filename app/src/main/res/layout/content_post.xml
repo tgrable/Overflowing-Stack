@@ -4,19 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.grable.overflowingstack.QuestionActivity">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.grable.overflowingstack.PostActivity"
+    tools:showIn="@layout/activity_post">
 
     <ScrollView
-        android:id="@+id/main_scrollview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/question_scroll_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/question_linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
@@ -26,7 +30,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
 
             <TextView
                 android:id="@+id/question_body"
@@ -34,19 +38,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"/>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/answerRecyclerView"
+            <TextView
+                android:id="@+id/question_answers_lable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp" />
+                android:layout_marginTop="16dp"
+                android:text="Answers: "
+                android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
         </LinearLayout>
 
     </ScrollView>
-
 </android.support.constraint.ConstraintLayout>

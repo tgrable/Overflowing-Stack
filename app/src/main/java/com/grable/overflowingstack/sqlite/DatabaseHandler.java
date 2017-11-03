@@ -46,6 +46,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_ANSWER_BODY_MARKDOWN = "body_markdown";
     private static final String KEY_ANSWER_CREATION_DATE = "creation_date";
     private static final String KEY_ANSWER_IS_ACCEPTED = "is_accepted";
+    private static final String KEY_ANSWER_SCORE = "score";
+    private static final String KEY_ANSWER_DOWN_VOTE = "down_vote_count";
+    private static final String KEY_ANSWER_UP_VOTE= "up_vote_count";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -62,7 +65,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_ANSWERS_TABLE = "CREATE TABLE " + TABLE_ANSWERS + "(" +
                 KEY_ANSWER_ID + " INTEGER PRIMARY KEY," + KEY_ANSWER_QUESTION_ID + " INTEGER," + KEY_ANSWER_BODY +
                 " TEXT," + KEY_ANSWER_BODY_MARKDOWN + " TEXT," + KEY_ANSWER_CREATION_DATE +
-                " TEXT," + KEY_ANSWER_IS_ACCEPTED + " TEXT" + ")";
+                " TEXT," + KEY_ANSWER_IS_ACCEPTED + " TEXT," + KEY_ANSWER_SCORE + " INTEGER,"
+                + KEY_ANSWER_DOWN_VOTE + " INTEGER," + KEY_ANSWER_UP_VOTE + " INTEGER)";
         sqLiteDatabase.execSQL(CREATE_ANSWERS_TABLE);
     }
 
@@ -130,6 +134,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             Boolean isAccepted = (answer.getIs_accepted() == null) ? false : answer.getIs_accepted();
             values.put(KEY_ANSWER_IS_ACCEPTED, isAccepted.toString()); // Answer Is Accepted
 
+            int score = (Integer.valueOf(answer.getScore()) == null) ? 0 : answer.getScore();
+            values.put(KEY_ANSWER_SCORE, score); // Answer Score
+
+            int downVote = (Integer.valueOf(answer.getDown_vote_count()) == null) ? 0 : answer.getDown_vote_count();
+            values.put(KEY_ANSWER_DOWN_VOTE, downVote); // Answer downVote
+
+            int upVote = (Integer.valueOf(answer.getUp_vote_count()) == null) ? 0 : answer.getUp_vote_count();
+            values.put(KEY_ANSWER_UP_VOTE, upVote); // Answer upVote
+
             // Inserting Row
             db.insert(TABLE_ANSWERS, null, values);
         }
@@ -137,11 +150,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    public Question getQuestion(int id) {
+    public Question getQuestion(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_QUESTIONS, new String[] { KEY_ID, KEY_TITLE, KEY_BODY, KEY_BODY_MARKDOWN, KEY_CREATION_DATE, KEY_IS_GUESSED}, KEY_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+                new String[] { String.valueOf(id) }, null, null, null , null);
 
         if (cursor != null) {
             cursor.moveToFirst();
@@ -162,6 +175,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return question;
     }
 
+    public List<Answer> getAnswersForQuestion(long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Answer> answerList = new ArrayList<Answer>();
+
+        String selectQuery = "SELECT * FROM " + TABLE_ANSWERS + " WHERE " + KEY_ANSWER_QUESTION_ID + "=? ORDER BY " + KEY_ID + " DESC";
+
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{String.valueOf(id)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                Answer a = new Answer();
+                a.setAnswer_id(Integer.parseInt(cursor.getString(0)));
+                a.setQuestion_id(Integer.parseInt(cursor.getString(1)));
+                a.setBody(cursor.getString(2));
+                a.setBody_markdown(cursor.getString(3));
+                a.setCreation_date(cursor.getString(4));
+                a.setIs_accepted(Boolean.parseBoolean(cursor.getString(5)));
+                a.setScore(Integer.parseInt(cursor.getString(6)));
+                a.setDown_vote_count(Integer.parseInt(cursor.getString(7)));
+                a.setUp_vote_count(Integer.parseInt(cursor.getString(8)));
+                answerList.add(a);
+
+            } while (cursor.moveToNext());
+        }
+
+        return answerList;
+    }
+
     public Post getFullPost(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
         String pq = "SELECT " + TABLE_QUESTIONS + "." + KEY_TITLE + ", " +
@@ -170,8 +211,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 TABLE_QUESTIONS + " INNER JOIN " +
                 TABLE_ANSWERS + " ON " + TABLE_QUESTIONS + ".id = " +
                 TABLE_ANSWERS + ".question_id WHERE " + TABLE_ANSWERS + ".question_id=?";
-
-        Log.d(App.TAG, "pq: " + pq);
 
         Cursor cursor = db.rawQuery(pq, new String[]{String.valueOf(id)});
 
@@ -200,7 +239,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public List<Question> getAllQuestions() {
         List<Question> questionList = new ArrayList<Question>();
 
-        String selectQuery = "SELECT * FROM " + TABLE_QUESTIONS;
+        String selectQuery = "SELECT * FROM " + TABLE_QUESTIONS + " ORDER BY " + KEY_ID + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 

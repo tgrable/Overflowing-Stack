@@ -50,7 +50,7 @@ public class Question {
         this.body = body;
         this.body_markdown = body_markdown;
         this.creation_date = creation_date;
-        this.isGuessed = isGuessed;
+        this.isGuessed = (isGuessed == null) ? false : isGuessed;
         this.answers = answers;
     }
 

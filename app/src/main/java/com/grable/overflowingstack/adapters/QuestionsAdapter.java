@@ -1,19 +1,21 @@
 package com.grable.overflowingstack.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.grable.overflowingstack.App;
+import com.grable.overflowingstack.HomeActivity;
 import com.grable.overflowingstack.R;
 import com.grable.overflowingstack.interfaces.QuestionSelectListener;
 import com.grable.overflowingstack.models.Question;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by timgrable on 10/30/17.
@@ -23,10 +25,12 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
 
     private ArrayList<Question> questionList;
     private QuestionSelectListener listener;
+    private Context context;
 
-    public QuestionsAdapter(ArrayList<Question> questionList, QuestionSelectListener listener) {
+    public QuestionsAdapter(ArrayList<Question> questionList, QuestionSelectListener listener, Context context) {
         this.questionList = questionList;
         this.listener = listener;
+        this.context = context;
     }
 
     /**
@@ -95,6 +99,50 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
     @Override
     public int getItemCount() {
         return this.questionList.size();
+    }
+
+    public void AddList(List<Question> questions) {
+        questionList.addAll(questions);
+        notifyDataSetChanged();
+    }
+
+    public void FilterList(String queryStrng) {
+        ArrayList<Question> masterList = HomeActivity.mQuestionsArrayList;
+        ArrayList<Question> listToFilter = new ArrayList<>();
+        for (Question q: masterList) {
+            if (q.getTitle().toLowerCase().contains(queryStrng.toLowerCase())) {
+                listToFilter.add(q);
+            }
+        }
+
+        questionList.clear();
+        questionList.addAll(listToFilter);
+        notifyDataSetChanged();
+    }
+
+    public void FilterForGuessedQuestions() {
+        ArrayList<Question> masterList = HomeActivity.mQuestionsArrayList;
+        ArrayList<Question> listToFilter = new ArrayList<>();
+        for (Question q: masterList) {
+            if (q.getIsGuessed()) {
+                listToFilter.add(q);
+            }
+        }
+
+        questionList.clear();
+        questionList.addAll(listToFilter);
+        notifyDataSetChanged();
+    }
+
+    public void ClearList() {
+        questionList.clear();
+        notifyDataSetChanged();
+    }
+
+    public void ReloadAllQuestions() {
+        questionList.clear();
+        questionList.addAll(HomeActivity.mQuestionsArrayList);
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -12,7 +12,7 @@ import retrofit2.http.Headers;
  */
 
 public interface RequestInterface {
-    @GET("android/questions_v1.json")
+    @GET("2.2/search/advanced?order=desc&sort=creation&accepted=True&answers=2&tagged=Android&site=stackoverflow&filter=!3yXvh9VWMxAG3jEhT")
     @Headers("Cache-Control: " + App.CACHE)
     Observable<OSResponse> getQuestions();
 }

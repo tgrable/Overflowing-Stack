@@ -1,9 +1,18 @@
 package com.grable.overflowingstack;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.grable.overflowingstack.interfaces.RequestInterface;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
+import java.util.Map;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -16,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class App extends Application {
     public static final String TAG = "tgrable";
-    public static final String BASE_URL = "http://5adbffc0980c238501d4-6ebc8dce445dc8adb8d88970e09e0fb4.r0.cf2.rackcdn.com/";
+    public static final String BASE_URL = "https://api.stackexchange.com/";
     public static final String CACHE = "max-age=3600, max-stale=259200";
 
     public static final String QUESTION_DB = "question";
@@ -26,9 +35,13 @@ public class App extends Application {
     public static OkHttpClient okHttpClient;
     public static Retrofit retrofit;
 
+    private static Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        this.context = getApplicationContext();
 
         int cacheSize = 10 * 1024 * 1024; // 10 MB
         Cache cache = new Cache(this.getCacheDir(), cacheSize);
@@ -45,5 +58,40 @@ public class App extends Application {
                 .addConverterFactory(gsonConverterFactory)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
+    }
+
+    public static void setMargins (View view, int left, int top, int right, int bottom) {
+        if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+            p.setMargins(left, top, right, bottom);
+            view.requestLayout();
+        }
+    }
+
+    public static void setUserScore(int score) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("user_score", score);
+        editor.apply();
+    }
+
+    public static int getUserScore() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int score = preferences.getInt("user_score", 0);
+
+        return score;
+    }
+
+    public static void logAllCurrentPreferences() {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Map<String,?> keys = preferences.getAll();
+
+        for(Map.Entry<String,?> entry : keys.entrySet()){
+            Log.d(App.TAG, entry.getKey() + ": " + entry.getValue().toString());
+        }
+
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        Log.d(App.TAG, metrics.toString());
     }
 }
