@@ -209,7 +209,6 @@ public class HomeActivity extends AppCompatActivity implements ObserverListener,
 
     @Override
     public void observerOnNext(List<?> list) {
-        App.setUserScore(0);
         mAdapter.ClearList();
 
         mQuestionsArrayList.clear();
