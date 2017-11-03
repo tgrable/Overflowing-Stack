@@ -2,23 +2,17 @@ package com.grable.overflowingstack;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.grable.overflowingstack.models.Answer;
-import com.grable.overflowingstack.models.Post;
 import com.grable.overflowingstack.models.Question;
 import com.grable.overflowingstack.sqlite.DatabaseHandler;
 
@@ -42,6 +36,8 @@ public class PostActivity extends AppCompatActivity {
     private Question question;
     private DatabaseHandler mDb;
     private int score;
+    private ArrayList<TextView> textViews;
+    private int correctAnswerIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +54,8 @@ public class PostActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mDb = new DatabaseHandler(this);
+
+        textViews = new ArrayList<>();
 
         Intent i = getIntent();
         long id = i.getLongExtra("question_id", 0);
@@ -84,7 +82,12 @@ public class PostActivity extends AppCompatActivity {
 
     private void getAnswersFromLocalDB(final List<Answer> answerList) {
         int count = 0;
+
         for (Answer a: answerList) {
+
+            if (a.getIs_accepted()) {
+                correctAnswerIndex = count;
+            }
 
             View v = new View(this);
             v.setMinimumHeight(10);
@@ -98,6 +101,8 @@ public class PostActivity extends AppCompatActivity {
             mQuestionLinearLayout.addView(textView);
             App.setMargins(textView, 50, 25, 25, 25);
 
+            textViews.add(textView);
+
             count++;
 
             textView.setOnClickListener(new View.OnClickListener() {
@@ -108,18 +113,19 @@ public class PostActivity extends AppCompatActivity {
                         mDb.updateQuestion(question);
                     }
 
+                    TextView tv = textViews.get(correctAnswerIndex);
+                    tv.setBackgroundColor(getResources().getColor(R.color.colorCorrectLight));
+
                     Answer a = answerList.get((Integer) view.getTag());
                     if (a.getIs_accepted()) {
-                        view.setBackgroundColor(getResources().getColor(R.color.colorCorrectLight));
                         score = score + (a.getUp_vote_count() - a.getDown_vote_count());
                         App.setUserScore(score);
-                        displayAlertDialog("Nice work! " + getStringMessage((a.getUp_vote_count() - a.getDown_vote_count()), true));
+                        displayAlertDialog("Nice work! \n\n Current Score: "  + score);
                     }
                     else {
-                        view.setBackgroundColor(getResources().getColor(R.color.colorCorrectWrong));
                         score = score - (a.getUp_vote_count() - a.getDown_vote_count());
                         App.setUserScore(score);
-                        displayAlertDialog("Keep Trying! " + getStringMessage((a.getUp_vote_count() - a.getDown_vote_count()), false));
+                        displayAlertDialog("Keep Trying! \n\n Current Score: " + score);
                     }
                 }
             });
