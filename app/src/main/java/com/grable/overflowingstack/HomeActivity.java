@@ -102,6 +102,8 @@ public class HomeActivity extends AppCompatActivity implements ObserverListener,
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_guessed) {
+            mQuestionsArrayList.clear();
+            getAllQuestionsFromLocalDB();
             mAdapter.FilterForGuessedQuestions();
 
             return true;
