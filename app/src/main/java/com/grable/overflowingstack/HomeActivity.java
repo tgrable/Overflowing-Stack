@@ -235,6 +235,9 @@ public class HomeActivity extends AppCompatActivity implements ObserverListener,
 
     @Override
     public void observerOnError(Throwable e) {
+        if (mRingProgressDialog != null && mRingProgressDialog.isShowing()) {
+            mRingProgressDialog.dismiss();
+        }
         Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
     }
 
