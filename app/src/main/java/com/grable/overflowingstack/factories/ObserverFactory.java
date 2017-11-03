@@ -14,6 +14,11 @@ import io.reactivex.disposables.Disposable;
 
 /**
  * Created by timgrable on 10/31/17.
+ *
+ * I was originally planning on making multiple api calls so I broke this out into its own class but then
+ * found the search/advanced api call that returned all the data i need.
+ *
+ *
  */
 
 public class ObserverFactory {

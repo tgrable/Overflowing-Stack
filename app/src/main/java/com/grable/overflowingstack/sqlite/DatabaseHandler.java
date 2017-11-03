@@ -28,11 +28,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "questionsManager";
 
-    // Contacts table name
+    // table name
     private static final String TABLE_QUESTIONS = "questions";
     private static final String TABLE_ANSWERS = "answers";
 
-    // Contacts Table Columns names
+    // Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_TITLE = "title";
     private static final String KEY_BODY = "body";
@@ -54,6 +54,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Creates the sqlite database
+     *
+     * @param sqLiteDatabase SQLiteDatabase object.
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String CREATE_QUESTIONS_TABLE = "CREATE TABLE " + TABLE_QUESTIONS + "(" +
@@ -70,6 +75,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_ANSWERS_TABLE);
     }
 
+    /**
+     * Upgrades the sqlite database
+     *
+     * @param int i
+     * @param int i1
+     */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         // Drop older table if existed
@@ -83,7 +94,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * All CRUD(Create, Read, Update, Delete) Operations
      */
-    // Adding new contact
+
+    /**
+     * Add a queston or answer the sqlite database
+     *
+     * @param T T Generic class to hold either question or answer
+     * @param String dbType
+     */
     public <T> void addQuestionsOrAnswers(T T, String dbType) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -150,6 +167,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
+    /**
+     * Get a queston or answer the sqlite database
+     *
+     * @param long id of the question to return
+     *
+     * @return Question object from local database
+     */
     public Question getQuestion(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -175,6 +199,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return question;
     }
 
+    /**
+     * Get a list questons or answers the sqlite database
+     *
+     * @param long id of the answers to return
+     *
+     * @return List of Answer objects from local database
+     */
     public List<Answer> getAnswersForQuestion(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Answer> answerList = new ArrayList<Answer>();
@@ -203,6 +234,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return answerList;
     }
 
+    /**
+     * Get a post sqlite database
+     *
+     * This was a failed attempt at using a sqlite JOIN call to save on
+     * database calls
+     *
+     * @param long id of the question to return
+     *
+     * @return Post object from local database
+     */
     public Post getFullPost(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
         String pq = "SELECT " + TABLE_QUESTIONS + "." + KEY_TITLE + ", " +
@@ -236,6 +277,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return p;
     }
 
+    /**
+     * Get a questions from the sqlite database
+     *
+     * @return List of Question objects from local database
+     */
     public List<Question> getAllQuestions() {
         List<Question> questionList = new ArrayList<Question>();
 
@@ -261,6 +307,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return questionList;
     }
 
+    /**
+     * Get a count of questions from the sqlite database
+     *
+     * @return int number of questions
+     */
     public int getQuestionsCount() {
         String countQuery = "SELECT  * FROM " + TABLE_QUESTIONS;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -269,6 +320,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
+    /**
+     * Get a count of questions from the sqlite database
+     *
+     * @param Question object to update
+     */
     public int updateQuestion(Question question) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -285,6 +341,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 new String[] { String.valueOf(question.getQuestion_id()) });
     }
 
+    /**
+     * Delete a questions from the sqlite database
+     *
+     * @param Question object to update
+     */
     public void deleteQuestion(Question question) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_QUESTIONS, KEY_ID + " = ?",

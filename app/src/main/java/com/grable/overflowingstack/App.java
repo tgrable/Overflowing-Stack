@@ -60,6 +60,10 @@ public class App extends Application {
                 .build();
     }
 
+    /**
+     * Utility function to set the margins for answer objects
+     *
+     */
     public static void setMargins (View view, int left, int top, int right, int bottom) {
         if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
@@ -68,6 +72,10 @@ public class App extends Application {
         }
     }
 
+    /**
+     * Utility function to set the Shared Preferences for user score
+     *
+     */
     public static void setUserScore(int score) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
@@ -75,6 +83,10 @@ public class App extends Application {
         editor.apply();
     }
 
+    /**
+     * Utility function to get the Shared Preferences for user score
+     *
+     */
     public static int getUserScore() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         int score = preferences.getInt("user_score", 0);
@@ -82,6 +94,10 @@ public class App extends Application {
         return score;
     }
 
+    /**
+     * Utility function to log all the Shared Preferences
+     *
+     */
     public static void logAllCurrentPreferences() {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);

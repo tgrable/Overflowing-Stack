@@ -67,9 +67,6 @@ public class HomeActivity extends AppCompatActivity implements ObserverListener,
         toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
 
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         ButterKnife.bind(this);
 
         mQuestionsArrayList = new ArrayList<>();

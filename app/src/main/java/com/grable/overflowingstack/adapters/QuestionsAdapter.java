@@ -101,11 +101,21 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
         return this.questionList.size();
     }
 
+    /**
+     * Updates the adapter with the recently downloaded list.
+     *
+     * @param questions List of question for the Stack Exchange API or local sql database.
+     */
     public void AddList(List<Question> questions) {
         questionList.addAll(questions);
         notifyDataSetChanged();
     }
 
+    /**
+     * Filters the List using the passed in query string
+     *
+     * @param queryStrng String to filter the list based on question title
+     */
     public void FilterList(String queryStrng) {
         ArrayList<Question> masterList = HomeActivity.mQuestionsArrayList;
         ArrayList<Question> listToFilter = new ArrayList<>();
@@ -120,6 +130,10 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
         notifyDataSetChanged();
     }
 
+    /**
+     * Filters the List based on question.is_guessed being true
+     * then updates the list
+     */
     public void FilterForGuessedQuestions() {
         ArrayList<Question> masterList = HomeActivity.mQuestionsArrayList;
         ArrayList<Question> listToFilter = new ArrayList<>();
@@ -134,11 +148,17 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
         notifyDataSetChanged();
     }
 
+    /**
+     * Clears the list
+     */
     public void ClearList() {
         questionList.clear();
         notifyDataSetChanged();
     }
 
+    /**
+     * Reloads all the questions
+     */
     public void ReloadAllQuestions() {
         questionList.clear();
         questionList.addAll(HomeActivity.mQuestionsArrayList);
