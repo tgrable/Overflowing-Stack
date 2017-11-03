@@ -9,6 +9,6 @@ which answer was the accepted answer. Any guessed answers will be saved to a sql
 2. Searching / filtering based on post title
 3. Display list of recently guessed questions
 4. Select a question from either of the lists above to view all the answers for that question
-5. Visitors can guess which answer they think is the “accepted” answer
+5. Visitors can guess which answer they think is the “accepted” answer by tapping the that answer
 6. After guessing, the correct answer is highlighted in green
 7. The users score is kept based on the up votes minus the down votes of the guessed answer 
