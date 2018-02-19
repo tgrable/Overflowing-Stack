@@ -30,4 +30,3 @@ task clean(type: Delete) {
 ext {
     fastAdapterVersion = '3.2.4'
 }
-

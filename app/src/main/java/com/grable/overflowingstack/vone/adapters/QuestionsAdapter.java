@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -116,7 +117,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
      * @param queryStrng String to filter the list based on question title
      */
     public void FilterList(String queryStrng) {
-        ArrayList<Question> masterList = HomeActivity.Companion.getMQuestionsArrayList();
+        ArrayList<Question> masterList = HomeActivity.mQuestionsArrayList;
         ArrayList<Question> listToFilter = new ArrayList<>();
         for (Question q: masterList) {
             if (q.getTitle().toLowerCase().contains(queryStrng.toLowerCase())) {
@@ -134,7 +135,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
      * then updates the list
      */
     public void FilterForGuessedQuestions() {
-        ArrayList<Question> masterList = HomeActivity.Companion.getMQuestionsArrayList();
+        ArrayList<Question> masterList = HomeActivity.mQuestionsArrayList;
         ArrayList<Question> listToFilter = new ArrayList<>();
         for (Question q: masterList) {
             if (q.getIsGuessed()) {
@@ -160,7 +161,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
      */
     public void ReloadAllQuestions() {
         questionList.clear();
-        questionList.addAll(HomeActivity.Companion.getMQuestionsArrayList());
+        questionList.addAll(HomeActivity.mQuestionsArrayList);
         notifyDataSetChanged();
     }
 
